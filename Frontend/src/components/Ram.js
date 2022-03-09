@@ -15,8 +15,9 @@ const Ram = () => {
 //  const [operacion, setOperations] = useState([]);
   useEffect(() => {
     //socket
-    socket.emit("ram", "asd-prueba");
-    socket.on("ram", async (mensaje) => {
+    //socket.emit("ram", "asd-prueba");
+    socket.emit("ram", async (mensaje) => {
+      
       console.log("MENSAJE: ", mensaje);
     })
   }, []);

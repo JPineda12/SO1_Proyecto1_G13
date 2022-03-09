@@ -6,26 +6,23 @@ async function getData(req, res, next) {
   try {
 
     const tasks = await Cpu.find();
-     res.json(tasks);
+     return tasks;
     
   } catch (error) {
-    res.status(500).json({
-      message: error.message || "Error en el registro de datos",
-    });
+    return {"Message":"Error"}
   }
 }
 
-async function getRam(req, res, next) {
-    //console.log("Alooo")
+async function getRam() {
+    
     try {
   
       const tasks = await Ram.find();
-       res.json(tasks);
+      //console.log(tasks); 
+      return tasks;
       
     } catch (error) {
-      res.status(500).json({
-        message: error.message || "Error en el registro de datos",
-      });
+      return {"Message":"Error"}
     }
   }
 
