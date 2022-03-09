@@ -27,8 +27,12 @@ static int escribir_archivo(struct seq_file *archivo, void*v){
     swap=info.freeswap*info.mem_unit;
     consumida=total-libre-compartida-buffer;
     
-    seq_printf(archivo,"{\"Total\":\"%8li\",\n",total);
-    seq_printf(archivo,"\"Consumida\":\"%8li\"}\n",consumida);
+        
+    seq_printf(archivo,"{\n\t\"Total\":%ld,\n",total);
+    seq_printf(archivo,"\t\"Consumida\":%ld,\n",consumida); 
+    seq_printf(archivo,"\t\"Libre\":%8ld,\n",libre);
+    seq_printf(archivo,"\t\"Porcentaje\":%8ld\n}\n",((consumida*100)/total));
+
     
     return 0;
 }

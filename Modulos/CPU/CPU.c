@@ -15,16 +15,23 @@ MODULE_AUTHOR("Grupo 13");
 struct task_struct *task_list;
 static int escribir_archivo(struct seq_file *archivo, void *v)
 {
+    bool first = true;
     seq_printf(archivo, "{\n\t\"Process_List\": [\n");
     for_each_process(task_list)
     {
+        if(!first){
+           seq_printf(archivo, ",\n");            
+        }
         seq_printf(archivo, "\t\t{\n\t\t\"Name\": \"%s\",\n", task_list->comm);
         seq_printf(archivo, "\t\t\"PID\": %d,\n", task_list->pid);
         seq_printf(archivo, "\t\t\"State\": %ld,\n", task_list->state);
-        seq_printf(archivo, "\t\t\"Parent PID\": %d,\n", task_list->parent->pid);
-        seq_printf(archivo, "\t\t}\n");
+        seq_printf(archivo, "\t\t\"Parent_PID\": %d\n", task_list->parent->pid);
+        seq_printf(archivo, "\t\t}");
+        if(first){
+            first = false;
+        }
     }
-    seq_printf(archivo, "\t]\n}\n");
+    seq_printf(archivo, "\n\t]\n}\n");
     return 0;
 }
 
