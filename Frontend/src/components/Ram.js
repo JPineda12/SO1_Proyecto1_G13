@@ -7,25 +7,20 @@ import { Rectangulo, Rectangulo2, Contenedor } from "./NavBarElements";
 
 defaults.global.tooltips.enabled = false;
 defaults.global.legend.position = "bottom";
-const baseUrl = "http://localhost:5000";
-
+const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
 
 const Ram = () => {
   const socket = io.connect(baseUrl);
   //-------------------
-//  const [operacion, setOperations] = useState([]);
   useEffect(() => {
-    //socket
-    //socket.emit("ram");
-    socket.on("ram", (mensaje) => {
-      
-      console.log("MENSAJE: ", mensaje);
+    socket.emit("ram", "asd-prueba");    
+    socket.on("ram", async (mensaje) => {
+    console.log("MENSAJE: ", mensaje);
     })
-    setTimeout(() => socket.emit("ram"), 500);
-
   }, [socket]);
-
   const tempInt = []
+  console.log(tempInt);
+
 
   //------------------
 
