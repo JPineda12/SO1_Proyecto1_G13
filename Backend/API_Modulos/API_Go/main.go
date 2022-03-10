@@ -37,6 +37,9 @@ type Data struct {
 	Process_List []Proceso `json:"Process_List"`
 }
 
+var ruta_ram = "/miproc/ram_grupo13"
+var ruta_cpu = "/miproc/cpu_grupo13"
+
 func New() Server {
 	a := &api{}
 
@@ -53,7 +56,7 @@ func (a *api) Router() http.Handler {
 }
 
 func (a *api) getCPU(w http.ResponseWriter, r *http.Request) {
-	reqBody, err := ioutil.ReadFile("/proc/cpu_grupo13")
+	reqBody, err := ioutil.ReadFile(ruta_cpu)
 	if err != nil {
 		fmt.Fprintf(w, "Inserte datos validos")
 		return
@@ -65,7 +68,7 @@ func (a *api) getCPU(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *api) getRAM(w http.ResponseWriter, r *http.Request) {
-	reqBody, err := ioutil.ReadFile("/proc/ram_grupo13")
+	reqBody, err := ioutil.ReadFile(ruta_ram)
 	if err != nil {
 		fmt.Fprintf(w, "Inserte datos validos")
 		return

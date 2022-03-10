@@ -1,0 +1,10 @@
+version: "3"
+services: 
+  backend: 
+    build: ./API_Go
+    container_name: backend_modulos
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - /proc:/miproc

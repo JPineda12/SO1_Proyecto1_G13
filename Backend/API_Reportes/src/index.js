@@ -5,10 +5,9 @@ const config = require("./config");
 const http = require("http");
 const socketIo = require("socket.io");
 
-
 const controlador = require("./controllers/Reportes.controller");
 
-require("./database")
+require("./database");
 const Route = require("./routes/Reportes.routes");
 
 const app = express();
@@ -23,22 +22,16 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => res.send("Welcome to my API!"));
 app.use("/api", Route.routes);
 
-
-
 const server = http.createServer(app);
-const io = socketIo(server, {cors: {origin: "*"}});;
+const io = socketIo(server, { cors: { origin: "*" } });
 
-io.on("connection",function (socket) {
-    console.log("Made socket connection");
-    
-    socket.on("ram", async function (data) {
-        console.log("DATA : " + data);
-        const messageData = await controlador.getRam();
-        console.log(messageData);
-        io.emit("ram", messageData);
-      });
+io.on("connection", function (socket) {
+  console.log("Made socket connection");
+
+  socket.on("ram", async function () {
+    const messageData = await controlador.getRam();
+    io.sockets.emit("ram", messageData);
   });
-
-
+});
 
 server.listen(puerto, () => console.log(`listening on port ${puerto}!`));
