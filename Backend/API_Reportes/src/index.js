@@ -22,16 +22,32 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => res.send("Welcome to my API!"));
 app.use("/api", Route.routes);
 
-const server = http.createServer(app);
-const io = socketIo(server, { cors: { origin: "*" } });
 
-io.on("connection", function (socket) {
-  console.log("Made socket connection");
+var server = require('http').Server(app);
+const io = socketIo(server, {cors: {origin: "https://frontendsopes-yjbbrfhtza-uc.a.run.app",
+                                    methods: ["GET","POST"]
+}});
 
-  socket.on("ram", async function () {
-    const messageData = await controlador.getRam();
-    io.sockets.emit("ram", messageData);
+let interval;
+
+io.on("connection",function (socket) {
+    console.log("Made socket connection");
+    if(interval){
+      clearInterval(interval);
+    }
+    interval = setInterval(() => getRam(),5000);
+
+
   });
-});
+
+
+
+async function getRam(){
+  
+  const messageData = await controlador.getRam();
+  console.log(messageData);
+  io.emit("ram", messageData)
+}
 
 server.listen(puerto, () => console.log(`listening on port ${puerto}!`));
+
