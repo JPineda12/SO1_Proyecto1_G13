@@ -7,14 +7,14 @@ import { Rectangulo, Rectangulo2, Contenedor } from "./NavBarElements";
 
 defaults.global.tooltips.enabled = false;
 defaults.global.legend.position = "bottom";
-const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
+const baseUrl = "http://localhost:5000";
 
 const Ram = () => {
   const socket = io.connect(baseUrl);
   //-------------------
   useEffect(() => {
-    socket.emit("ram", "asd-prueba");    
-    socket.on("ram", async (mensaje) => {
+    socket.emit("cpu", "asd-prueba");    
+    socket.on("cpu", async (mensaje) => {
     console.log("MENSAJE: ", mensaje);
     })
   }, [socket]);

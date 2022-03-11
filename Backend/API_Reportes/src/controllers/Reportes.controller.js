@@ -1,5 +1,6 @@
 const Cpu = require("../models/Reportes.cpu");
 const Ram = require("../models/Reportes.ram");
+const Log = require("../models/Reportes.log");
 
 async function getData(req, res, next) {
   //console.log("Alooo")
@@ -26,8 +27,22 @@ async function getRam() {
     }
   }
 
+  async function getLog() {
+    
+    try {
+  
+      const tasks = await Log.find();
+      //console.log(tasks); 
+      return tasks;
+      
+    } catch (error) {
+      return {"Message":"Error"}
+    }
+  }
+
 
 module.exports = {
   getData,
   getRam,
+  getLog,
 };
