@@ -26,13 +26,13 @@ type Server interface {
 type LogRam struct {
 	VM       string
 	Endpoint string
-	Data     []DataRam
+	Data     DataRam
 	Date     string
 }
 type LogCPU struct {
 	VM       string
 	Endpoint string
-	Data     []DataCPU
+	Data     DataCPU
 	Date     string
 }
 
@@ -90,11 +90,12 @@ func (a *api) PostRAM(w http.ResponseWriter, r *http.Request) {
 
 	collection = client.Database("ProyectoSopes1").Collection("memoria")
 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	collection.InsertOne(ctx, logRAM.Data)
+
+	fmt.Println("logRAM: ", logRAM.Data)
+	fmt.Println(collection.InsertOne(ctx, logRAM.Data))
 
 	//RESPUESTA
 	w.Header().Set("Content-Type", "application/json")
@@ -126,7 +127,6 @@ func (a *api) PostCPU(w http.ResponseWriter, r *http.Request) {
 
 	collection = client.Database("ProyectoSopes1").Collection("procesos")
 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
