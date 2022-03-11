@@ -26,9 +26,11 @@ type Proceso struct {
 	PID        int64  `json:"PID"`
 	State      int64  `json:"State"`
 	Parent_PID int64  `json:"Parent_PID"`
+	Sons_List  []Proceso
 }
 
 type RAM struct {
+	VM         string
 	Total      int64
 	Consumida  int64
 	Libre      int64
@@ -36,6 +38,7 @@ type RAM struct {
 }
 
 type DataCPU struct {
+	VM           string
 	Process_List []Proceso `json:"Process_List"`
 }
 
@@ -54,7 +57,7 @@ type LogCPU struct {
 
 var ruta_ram = "/miproc/ram_grupo13"
 var ruta_cpu = "/miproc/cpu_grupo13"
-var num_VM = "Virtual Machine 1"
+var num_VM = "Virtual Machine 2"
 var RAM_URL = "https://us-central1-modified-talon-341302.cloudfunctions.net/sopes-logram"
 var CPU_URL = "https://us-central1-modified-talon-341302.cloudfunctions.net/sopes1-logcpu"
 
@@ -88,11 +91,12 @@ func (a *api) getCPU(w http.ResponseWriter, r *http.Request) {
 	}
 	var x DataCPU
 	json.Unmarshal(reqBody, &x)
-
+	fmt.Println("x sons: ", x.Process_List[0].Sons_List)
 	var log_CPU LogCPU
 	log_CPU.VM = num_VM
 	log_CPU.Endpoint = "/CPU"
 	log_CPU.Data = x
+	log_CPU.Data.VM = num_VM
 	tiempo := time.Now()
 	log_CPU.Date = tiempo.String()
 	jsonInfo, _ := json.Marshal(log_CPU)
@@ -125,6 +129,7 @@ func (a *api) getRAM(w http.ResponseWriter, r *http.Request) {
 	log_RAM.VM = num_VM
 	log_RAM.Endpoint = "/RAM"
 	log_RAM.Data = x
+	log_RAM.Data.VM = num_VM
 	tiempo := time.Now()
 	log_RAM.Date = tiempo.String()
 	jsonInfo, _ := json.Marshal(log_RAM)

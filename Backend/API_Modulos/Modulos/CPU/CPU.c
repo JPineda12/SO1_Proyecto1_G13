@@ -13,9 +13,12 @@ MODULE_DESCRIPTION("Modulo lista de procesos - Sistemas Operativos 1");
 MODULE_AUTHOR("Grupo 13");
 
 struct task_struct *task_list;
+struct list_head* list;
+struct task_struct *task_child;
 static int escribir_archivo(struct seq_file *archivo, void *v)
 {
     bool first = true;
+    bool hijo_first = true;
     seq_printf(archivo, "{\n\t\"Process_List\": [\n");
     for_each_process(task_list)
     {
@@ -25,7 +28,26 @@ static int escribir_archivo(struct seq_file *archivo, void *v)
         seq_printf(archivo, "\t\t{\n\t\t\"Name\": \"%s\",\n", task_list->comm);
         seq_printf(archivo, "\t\t\"PID\": %d,\n", task_list->pid);
         seq_printf(archivo, "\t\t\"State\": %ld,\n", task_list->state);
-        seq_printf(archivo, "\t\t\"Parent_PID\": %d\n", task_list->parent->pid);
+        seq_printf(archivo, "\t\t\"Parent_PID\": %d,\n", task_list->parent->pid);
+        //Obtener Hijos
+        seq_printf(archivo, "\t\t\"Sons_List\": [\n");
+        list_for_each(list, &(task_list->children)){
+            task_child = list_entry(list, struct task_struct, sibling);
+            if(!hijo_first){
+                seq_printf(archivo, ",\n");
+            }
+            seq_printf(archivo, "\t\t\t{\n\t\t\t\"Name\": \"%s\",\n", task_child->comm);
+            seq_printf(archivo, "\t\t\t\"PID\": %d,\n", task_child->pid);
+            seq_printf(archivo, "\t\t\t\"State\": %ld,\n", task_child->state);
+            seq_printf(archivo, "\t\t\t\"Parent_PID\": %d\n", task_child->parent->pid);       
+            seq_printf(archivo, "\t\t\t}");
+            if(hijo_first){
+                hijo_first = false;
+            }
+        }
+        seq_printf(archivo, "\n\t\t]\n");
+        //Fin hijos
+        hijo_first = true;
         seq_printf(archivo, "\t\t}");
         if(first){
             first = false;
