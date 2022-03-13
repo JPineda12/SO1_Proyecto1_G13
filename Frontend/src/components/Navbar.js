@@ -18,13 +18,13 @@ const Navbar = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-            <NavLink to='/Ram' activeStyle>
+            <NavLink to='/Ram' >
                <h3>Ram</h3>
             </NavLink>
-            <NavLink to='/Lista' activeStyle>
+            <NavLink to='/Lista' >
                 <h3>Lista Procesos</h3>
             </NavLink>
-            <NavLink to='/Logs' activeStyle>
+            <NavLink to='/Logs' >
                 <h3>Logs</h3>
             </NavLink>
         </NavMenu>

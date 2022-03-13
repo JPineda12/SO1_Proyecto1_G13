@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Line, defaults } from "react-chartjs-2";
 import io from 'socket.io-client';
 
-import { Rectangulo, Rectangulo2, Contenedor } from "./NavBarElements";
+import { Rectangulo, Rectangulo2, Contenedor, Cartel } from "./NavBarElements";
 //import { Line, defaults } from 'react-chartjs-2'
 
 defaults.global.tooltips.enabled = false;
 defaults.global.legend.position = "bottom";
-const baseUrl = "http://localhost:5000";
-const baseUrl2 = "http://34.107.243.225";
+const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
+const baseUrl2 = "https://34.149.160.8/RAM";
+const counter=1
 
 function Ram () {
   //-----------DATA VM1---------
@@ -19,38 +20,39 @@ function Ram () {
   const [consumida, setConsumida] = useState([])
   const [porcentaje, setPorcentaje] = useState([])
   const [libre, setLibre] = useState([])
- // const [porcgraph1, setPorcgraph1] = useState([])
+  const [porcgraph1, setPorcgraph1] = useState([])
+  const [porcgraph2, setPorcgraph2] = useState([])
+  const [axis, setAxis] = useState([0])
 //------------DATA VM2---------
   const [total2, setTotal2] = useState([])
+
   const [consumida2, setConsumida2] = useState([])
   const [porcentaje2, setPorcentaje2] = useState([])
   const [libre2, setLibre2] = useState([])
-  let interval
 
-  function actualizar(data){
-    setDatos(datos=> data[data.length-1])
-    //setTotal(totalRam=>datos.data.total)
-  }
+
 
   function totalRams(data){
     console.log(data[data.length-1].vm)
-    
+
     if (data[data.length-1].vm==="Virtual Machine 2"){
       console.log("MAQUINA 2 ADENTRO")
-      setTotal2(tot=> data[data.length-1].data.total)
-      setConsumida2(tot=> data[data.length-1].data.consumida)
-      setPorcentaje2(tot=> data[data.length-1].data.porcentaje)
-      setLibre2(tot=> data[data.length-1].data.libre)
+      setTotal2(tot=> data[data.length-1].total)
+      setConsumida2(tot=> data[data.length-1].consumida)
+      setPorcentaje2(tot=> data[data.length-1].porcentaje)
+      setLibre2(tot=> data[data.length-1].libre)
     }else{
-      setTotal(tot=> data[data.length-1].data.total)
-      setConsumida(tot=> data[data.length-1].data.consumida)
-      setPorcentaje(tot=> data[data.length-1].data.porcentaje)
-      setLibre(tot=> data[data.length-1].data.libre)
-      //setPorcgraph1(oldArray => [...oldArray, data[data.length-1].data.porcentaje]);
-     // console.log(porcgraph1)
+      setTotal(tot=> data[data.length-1].total)
+      setConsumida(tot=> data[data.length-1].consumida)
+      setPorcentaje(tot=> data[data.length-1].porcentaje)
+      setLibre(tot=> data[data.length-1].libre)
+
     }
 
   }
+
+
+  //sssssss
 
   //-----------SOCKET CONNECTION
   const socket = io.connect(baseUrl);
@@ -59,6 +61,9 @@ function Ram () {
   useEffect(() => {
     const interval = setInterval(() => {
       getInfo()
+      setPorcgraph1(datos=>[...datos,porcentaje])
+      setPorcgraph2(datos=>[...datos,porcentaje2])
+      setAxis(datos=>[...datos,datos[datos.length-1]+1])
     }, 5000);
     
     socket.emit("ram", "asd-prueba");    
@@ -66,7 +71,6 @@ function Ram () {
     console.log("MENSAJE: ", mensaje);
     totalRams(mensaje)
     })
-
     return () => clearInterval(interval);
   }, [socket]);
   const tempInt = []
@@ -75,9 +79,10 @@ function Ram () {
 
 
 
+  
 
   const getInfo = async() => {
-    await fetch(`${baseUrl2}/RAM`, {
+    await fetch(`${baseUrl2}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json"
@@ -93,7 +98,7 @@ function Ram () {
   //-----DESIGN----
   return (
     <div>
-      <div>RAM</div>
+      
       <Rectangulo>
         <h3>VM1</h3>
         <div className="rectangle2">
@@ -138,17 +143,17 @@ function Ram () {
       <Contenedor>
         <Line
           data={{
-            labels: [1,2,3,4,5,6],
+            labels: axis,
             datasets: [
               {
-                label: "VM1",
-                data: [1,2],
+                label: "VM1 %",
+                data: porcgraph1,
                 borderColor: "orange",
                 borderWidth: 1,
               },
               {
-                label: "VM2",
-                data: [porcentaje2],
+                label: "VM2%",
+                data: porcgraph2,
                 borderColor: "red",
               },
             ],

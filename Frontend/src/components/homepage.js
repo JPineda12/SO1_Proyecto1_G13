@@ -3,12 +3,12 @@ import logo from '../logo.svg';
 
 const Homepage = () => {
   return (
-<div class="jumbotron">
-  <h1 class="display-4">SOPES1!</h1>
-  <p class="lead">Fase 1 Proyecto Sistemas Operativos Grupo 13?</p>
+<div className="jumbotron">
+  <h1 className="display-4">SOPES1!</h1>
+  <p className="lead">Fase 1 Proyecto Sistemas Operativos Grupo 13?</p>
   <p>Modulos de Kernel.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="/" role="button">pruebas</a>
+  <p className="lead">
+    <a className="btn btn-primary btn-lg" href="/" role="button">pruebas</a>
   </p>
 </div>
   )
