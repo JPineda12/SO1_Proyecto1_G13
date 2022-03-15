@@ -51,15 +51,18 @@ function ListaPro() {
       return "TASK_WAKING"
     }else if(data=="512"){
       return "TASK_PARKED"
-    }else if(data=="1024" || data=="1026"){
+    }else if(data=="1024"){
       return "TASK_NOLOAD"
     }else if(data=="2048"){
       return "TASK_STATE_MAX"
+    }else if(data=="1026"){
+      return "SLEEPING"
     }
 
   }
 
   useEffect(() => {
+    socket.connect()
     const interval = setInterval(() => {
       getInfo()
     }, 5000);
@@ -67,25 +70,22 @@ function ListaPro() {
     socket.on("cpu", async (mensaje) => {
     console.log("MENSAJE: ", mensaje);
     llenar(mensaje)
+    socket.disconnect()
     //totalRams(mensaje)
     })
 
     return () => clearInterval(interval);
   }, [socket]);
 
+  const tempInt = []
+  console.log(tempInt);
+  console.log("sali")
+
 
   const getInfo = async() => {
     await fetch(`${baseUrl2}`, {
         method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        
-        }
     })
-    .then(resp => resp.json())
-    .then(data => {
-      setOperations(data)  
-    }).catch(console.error)
   }
 
   console.log(lista)

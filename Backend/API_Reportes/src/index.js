@@ -24,10 +24,12 @@ app.get("/", (req, res) => res.send("Welcome to my API!"));
 app.use("/api", Route.routes);
 
 
-var server = require('http').Server(app);
-const io = socketIo(server, {cors: {origin: "http://localhost:3000",
-                                    methods: ["GET","POST"]
-}});
+var server = http.createServer(app);
+const io = socketIo(server, {cors: {
+  origin: "https://frontendsopes-yjbbrfhtza-uc.a.run.app",
+  methods: ["GET","POST"],
+  transports: ['websocket','polling']
+}}, cors_allowed_origins = "https://frontendsopes-yjbbrfhtza-uc.a.run.app");
 
 let interval;
 
@@ -45,7 +47,8 @@ io.on("connection",function (socket) {
   socket.on("log", function (data) {
     interval = setInterval(() => getLOG(),5000);
   });
-  
+
+ return()=>socket.disconnect();
 });
   
 async function getRam(){
@@ -59,7 +62,8 @@ async function getCPU(){
   
   const messageData = await controlador.getData();
   console.log("CPU");
-  io.emit("cpu", messageData)
+  io.emit("cpu", messageData);
+  console.log(messageData);
 }
 
 async function getLOG(){

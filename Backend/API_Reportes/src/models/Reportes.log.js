@@ -2,10 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const LogSchema = new Schema(
     {
-      VM: { type: String, default: 0 },
-      Endpoint: { type: String, default: 0 },
-      Data: { type: Object, default: 0 },
-      Date: { type: String, default: 0 },
+      vm: { type: String, default: 0 },
+      endpoint: { type: String, default: 0 },
+      data: { type: Object, default: 0 },
+      date: { type: String, default: 0 },
     },
     {
       versionKey: false,

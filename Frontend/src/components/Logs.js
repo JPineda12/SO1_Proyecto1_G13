@@ -27,11 +27,12 @@ function Logs() {
   }
 
   useEffect(() => {
-
+    socket.connect()
     socket.emit("log", "asd-prueba");    
     socket.on("log", async (mensaje) => {
     console.log("MENSAJE: ", mensaje);
     llenar(mensaje)
+    socket.disconnect()
     //totalRams(mensaje)
     })
 

@@ -2,10 +2,11 @@ const { Schema, model } = require("mongoose");
 
 const RamSchema = new Schema(
     {
-      Total: { type: Number, default: 0 },
-      Uso: { type: Number, default: 0 },
-      Porcentaje: { type: Number, default: 0 },
-      Libre: { type: Number, default: 0 },
+      vm: { type: String, default: 0 },
+      total: { type: Number, default: 0 },
+      consumida: { type: Number, default: 0 },
+      libre: { type: Number, default: 0 },
+      porcentaje: { type: Number, default: 0 },
     },
     {
       versionKey: false,

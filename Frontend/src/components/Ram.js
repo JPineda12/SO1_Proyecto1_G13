@@ -59,6 +59,7 @@ function Ram () {
  
   //-------------------
   useEffect(() => {
+    socket.connect()
     const interval = setInterval(() => {
       getInfo()
       setPorcgraph1(datos=>[...datos,porcentaje])
@@ -70,7 +71,9 @@ function Ram () {
     socket.on("ram", async (mensaje) => {
     console.log("MENSAJE: ", mensaje);
     totalRams(mensaje)
+    socket.disconnect()
     })
+    
     return () => clearInterval(interval);
   }, [socket]);
   const tempInt = []
@@ -84,15 +87,7 @@ function Ram () {
   const getInfo = async() => {
     await fetch(`${baseUrl2}`, {
         method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        
-        }
     })
-    .then(resp => resp.json())
-    .then(data => {
-      setOperations(data)  
-    }).catch(console.error)
   }
 
   //-----DESIGN----
