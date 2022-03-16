@@ -42,8 +42,9 @@ para guardar en la base de datos.
   <img align="center" width="240px" src="imgs/VMMongo.png" />
 </p>
 En una tercera maquina virtual se instalo Docker y se levanto un contenedor de MongoDB la cual es la encargada de guardar los diferentes registros del proyecto. Logs, CPU y RAM
-<br>
-Este se comunica solamente con la [CloudFunction](#guardado-de-Logs---cloud-functions) 
+</br>
+
+Este se comunica solamente con la [CloudFunction](#Guardado-de-Logs---Cloud-Functions) 
 para guardar datos y con la [Api Reportes](#API-Reportes---App-Engine) 
 para obtener los datos guardados.
 
