@@ -11,12 +11,20 @@ cada parte del proyecto. A continuacion se describe cada parte de la arquitectur
   <img align="center" width="240px" src="imgs/CloudRun.png" />
 </p>
 
+Este servicio nos permite hacer despliegues de aplicaciones en la nube haciendo uso de docker. En este caso se hizo una aplicacion web en react, la cual fue dockerizada y posteriormente se hace el despliegue en el servicio.
+
+>> En esta aplicación se muestra en tiempo real la informacion de cada proceso y el uso de la memoria en cada una de las maquinas virtuales, detallando el trafico del balanceador de carga.
 
 # API Reportes - App Engine
 <p align="center"> 
   <img align="center" width="240px" src="imgs/AppEngine.png" />
 </p>
 
+Este servicio nos permite hacer el despliegue de API's en la nube, en este caso se hizo uso de node para poder comunicar el frontend hecho en react, con la base de datos hecha en mongoDB.
+
+Para el despliegue de esta API se usa un archivo .yaml el cual especifica las dependencias que necesita para funcionar la aplicacion, en este caso solo nodejs16.
+
+>> Para acceder a la api se puede hacer desde el siguiente link: https://loyal-operation-341718.uc.r.appspot.com
 
 # APIs Modulos - VM 
 <p align="center"> 
