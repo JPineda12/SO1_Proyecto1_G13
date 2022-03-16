@@ -9,7 +9,6 @@ const controlador = require("./controllers/Reportes.controller");
 
 require("./database");
 const Route = require("./routes/Reportes.routes");
-const { randomInt } = require("crypto");
 
 const app = express();
 const puerto = config.PORT;
@@ -23,55 +22,72 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => res.send("Welcome to my API!"));
 app.use("/api", Route.routes);
 
-
 var server = http.createServer(app);
-const io = socketIo(server, {cors: {
-  origin: "https://frontendsopes-yjbbrfhtza-uc.a.run.app",
-  methods: ["GET","POST"],
-  transports: ['websocket','polling']
-}}, cors_allowed_origins = "https://frontendsopes-yjbbrfhtza-uc.a.run.app");
+const io = socketIo(
+  server,
+  {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      transports: ["websocket", "polling"],
+    },
+  },
+  (cors_allowed_origins = "*")
+);
 
 let interval;
 
-io.on("connection",function (socket) {
+io.on("connection", function (socket) {
   console.log("Made socket connection");
-  if(interval){
+  if (interval) {
     clearInterval(interval);
   }
-  socket.on("ram", function (data) {
-    interval = setInterval(() => getRam(),5000);
-  });
-  socket.on("cpu", function (data) {
-    interval = setInterval(() => getCPU(),5000);
-  });
-  socket.on("log", function (data) {
-    interval = setInterval(() => getLOG(),5000);
-  });
-
- return()=>socket.disconnect();
+  if (socket.connected) {
+    socket.on("ram", function (data) {
+      interval = setInterval(() => {
+        if (socket.connected) {
+          getRam();
+        } else {
+          clearInterval(interval);
+        }
+      }, 5000);
+    });
+    socket.on("cpu", function (data) {
+      interval = setInterval(() => {
+        if (socket.connected) {
+          getCPU();
+        } else {
+          clearInterval(interval);
+        }
+      }, 5000);
+    });
+    socket.on("log", function (data) {
+      getLOG();      
+    });
+    socket.on("disconnect", function (data) {
+      console.log("Socket Disconnected");
+      socket.disconnect();
+      socket.connected = false;
+    });
+  }
 });
-  
-async function getRam(){
+
+async function getRam() {
+  console.log("RAM Emit")
   const messageData = await controlador.getRam();
-  console.log("ram");
-  io.emit("ram", messageData)
-
+  io.emit("ram", messageData);
 }
 
-async function getCPU(){
-  
+async function getCPU() {
+  console.log("CPU Emit")
   const messageData = await controlador.getData();
-  console.log("CPU");
   io.emit("cpu", messageData);
-  console.log(messageData);
 }
 
-async function getLOG(){
-  
+async function getLOG() {
+  console.log("LOG EMIT");
   const messageData = await controlador.getLog();
-  console.log("log");
-  io.emit("log", messageData)
+  io.emit("log", messageData);
 }
 
 server.listen(puerto, () => console.log(`listening on port ${puerto}!`));
-

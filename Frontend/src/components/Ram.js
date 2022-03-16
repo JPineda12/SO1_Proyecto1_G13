@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Line, defaults } from "react-chartjs-2";
 import io from 'socket.io-client';
 
@@ -7,7 +7,7 @@ import { Rectangulo, Rectangulo2, Contenedor, Cartel } from "./NavBarElements";
 
 defaults.global.tooltips.enabled = false;
 defaults.global.legend.position = "bottom";
-const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
+const baseUrl = "http://localhost:5000";
 const baseUrl2 = "https://34.149.160.8/RAM";
 const counter=1
 
@@ -30,6 +30,30 @@ function Ram () {
   const [porcentaje2, setPorcentaje2] = useState([])
   const [libre2, setLibre2] = useState([])
 
+  const socket = useRef();
+
+
+  useEffect(() => {
+    console.log("RAM MOUNTED")
+    socket.current = io.connect("http://localhost:5000");
+    const interval = setInterval(() => {
+      getInfo()
+      setPorcgraph1(datos=>[...datos,porcentaje])
+      setPorcgraph2(datos=>[...datos,porcentaje2])
+      setAxis(datos=>[...datos,datos[datos.length-1]+1])
+    }, 5000);
+    
+    socket.current.emit("ram", "asd-prueba");    
+    socket.current.on("ram", async (mensaje) => {
+    console.log("MENSAJE: ", mensaje);
+    totalRams(mensaje)
+    })
+    
+    return () => {
+      clearInterval(interval);
+      console.log("RAM UNMOUNTED")
+      socket.current.disconnect();
+    };  }, []);
 
 
   function totalRams(data){
@@ -51,33 +75,8 @@ function Ram () {
 
   }
 
-
-  //sssssss
-
-  //-----------SOCKET CONNECTION
-  const socket = io.connect(baseUrl);
- 
   //-------------------
-  useEffect(() => {
-    socket.connect()
-    const interval = setInterval(() => {
-      getInfo()
-      setPorcgraph1(datos=>[...datos,porcentaje])
-      setPorcgraph2(datos=>[...datos,porcentaje2])
-      setAxis(datos=>[...datos,datos[datos.length-1]+1])
-    }, 5000);
-    
-    socket.emit("ram", "asd-prueba");    
-    socket.on("ram", async (mensaje) => {
-    console.log("MENSAJE: ", mensaje);
-    totalRams(mensaje)
-    socket.disconnect()
-    })
-    
-    return () => clearInterval(interval);
-  }, [socket]);
-  const tempInt = []
-  console.log(tempInt);
+  
   console.log("sali")
 
 

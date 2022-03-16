@@ -6,10 +6,20 @@ async function getData(req, res, next) {
   //console.log("Alooo")
   try {
 
-    const tasks = await Cpu.find();
+    const tasks = await Cpu.find()
+    .sort({$natural: -1})
+    .limit(1)
+    .then(
+      function(doc) {
+        return doc
+      },
+      function(err) {
+        console.log('Error:', err);
+      })
      return tasks;
     
   } catch (error) {
+    console.log("ERROR: ", error)
     return {"Message":"Error"}
   }
 }
@@ -31,11 +41,11 @@ async function getRam() {
     
     try {
   
-      const tasks = await Log.find();
-      //console.log(tasks); 
-      return tasks;
+      const tasks = await Log.find()
+       return tasks;
       
     } catch (error) {
+      console.log("ERROR: ", error)
       return {"Message":"Error"}
     }
   }
