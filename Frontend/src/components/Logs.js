@@ -3,14 +3,14 @@ import { Table } from "reactstrap";
 import io from "socket.io-client";
 import { JsonView, darkStyles, defaultStyles } from "react-json-view-lite";
 
-const baseUrl = "http://localhost:5000";
+const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
 
 function Logs() {
   const [logs, setLogs] = useState([]);
   const [operaciones, setOperations] = useState([]);
   const socket = useRef();
   useEffect(() => {
-    socket.current = io.connect("http://localhost:5000");
+    socket.current = io.connect("https://loyal-operation-341718.uc.r.appspot.com");
     //socket.emit("log", "asd-prueba");
     console.log("Socket Log Connected");
     

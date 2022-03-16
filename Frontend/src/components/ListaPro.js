@@ -5,7 +5,7 @@ import "./Tabla.css";
 import { Rectangulo, Rectangulo2, Contenedor } from "./NavBarElements";
 import { JsonView, darkStyles, defaultStyles } from "react-json-view-lite";
 
-const baseUrl = "http://localhost:5000";
+const baseUrl = "https://loyal-operation-341718.uc.r.appspot.com";
 const baseUrl2 = "https://34.149.160.8/CPU";
 
 let datoss;
@@ -17,7 +17,7 @@ function ListaPro() {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io.connect("http://localhost:5000");
+    socket.current = io.connect("https://loyal-operation-341718.uc.r.appspot.com");
     console.log("Socket proc connected")
     const interval = setInterval(() => {
       getInfo();
