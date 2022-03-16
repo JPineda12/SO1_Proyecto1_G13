@@ -35,12 +35,14 @@ Esta API fue escrita en GO y dockerizada. Permite la comunicacion entre el siste
 Lee la informacion del modulo kernel solicitado con su respectivo endpoint (RAM o CPU) y envia una solicitud POST a la [CloudFunction](#guardado-de-Logs---cloud-functions) para guardar en la base de datos.
 
 
-
-
 # Base de Datos - VM
 <p align="center"> 
   <img align="center" width="240px" src="imgs/VMMongo.png" />
 </p>
+En una tercera maquina virtual se instalo Docker y se levanto un contenedor de MongoDB la cual es la encargada de guardar los diferentes registros del proyecto. Logs, CPU y RAM
+
+Este se comunica solamente con la [CloudFunction](#guardado-de-Logs---cloud-functions) para guardar datos y con la [Api Reportes](#API-Reportes---App-Engine)
+
 
 # Guardado de Logs - Cloud Functions
 <p align="center"> 
