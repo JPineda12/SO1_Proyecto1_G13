@@ -32,7 +32,9 @@ Utilizacion el servicio de Compute Engine se crearon 2 maquinas virtuales (VM) l
 
 - ### API Modulos (GO)
 Esta API fue escrita en GO y dockerizada. Permite la comunicacion entre el sistema operativo de la virtual machine y la insercion de datos en la base de datos. <br>
-Lee la informacion del modulo kernel solicitado con su respectivo endpoint (RAM o CPU) y envia una solicitud POST a la [CloudFunction](#guardado-de-Logs---cloud-functions) para guardar en la base de datos.
+Lee la informacion del modulo kernel solicitado con su respectivo endpoint (RAM o CPU) y envia una solicitud POST a la 
+[CloudFunction](#guardado-de-Logs---cloud-functions) 
+para guardar en la base de datos.
 
 
 # Base de Datos - VM
@@ -41,7 +43,9 @@ Lee la informacion del modulo kernel solicitado con su respectivo endpoint (RAM 
 </p>
 En una tercera maquina virtual se instalo Docker y se levanto un contenedor de MongoDB la cual es la encargada de guardar los diferentes registros del proyecto. Logs, CPU y RAM
 <br>
-Este se comunica solamente con la [CloudFunction](#guardado-de-Logs---cloud-functions) para guardar datos y con la [Api Reportes](#API-Reportes---App-Engine) para obtener los datos guardados.
+Este se comunica solamente con la [CloudFunction](#guardado-de-Logs---cloud-functions) 
+para guardar datos y con la [Api Reportes](#API-Reportes---App-Engine) 
+para obtener los datos guardados.
 
 
 # Guardado de Logs - Cloud Functions
@@ -58,7 +62,7 @@ El servicio de Cloud Functions aloja una funcion en GO que permite enviar reques
   <img align="center" width="240px" src="imgs/Balancer.png" />
 </p>
 
-El Balanceador se encarga de dividir el trafico proveniente de las solicitudes del [Frontend](#Frontend - Cloud Run) a conveniencia para realizar las peticiones a cualquiera de las dos Maquinas virtuales que contienen la API de Modulos.
+El Balanceador se encarga de dividir el trafico proveniente de las solicitudes del [Frontend](#Frontend---Cloud-Run) a conveniencia para realizar las peticiones a cualquiera de las dos Maquinas virtuales que contienen la API de Modulos.
 
 
 
